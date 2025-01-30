@@ -9,6 +9,8 @@ import {dehydrate, HydrationBoundary, useQueryClient} from "@tanstack/react-quer
 import {useState} from "react";
 import {useWeather} from "@/hooks/useWeather";
 import {WeatherUnits} from "@/services/weather";
+import * as Yup from 'yup';
+import {Loader2} from "lucide-react";
 
 interface FormValues {
     city: string;
@@ -21,12 +23,20 @@ export default function Home() {
 
     const [weatherUnits] = useState<WeatherUnits>('metric');
 
-    const {weather} = useWeather({cityName: currentWeatherCity, units: weatherUnits});
+    const {
+        isSuccess, isError, error, isLoading, weather
+    } = useWeather({
+        cityName: currentWeatherCity,
+        units: weatherUnits
+    });
 
     const formik = useFormik<FormValues>({
         initialValues: {
             city: '',
         },
+        validationSchema: Yup.object({
+            city: Yup.string().required('City is required'),
+        }),
         onSubmit: values => {
             setCurrentWeatherCity(values.city);
         }
@@ -54,9 +64,28 @@ export default function Home() {
                                     onChange={formik.handleChange}
                                     value={formik.values.city}
                                 />
-                                <Button type="submit">Get Weather</Button>
+                                <Button type="submit" disabled={isLoading}>
+                                    {isLoading ? (
+                                        <>
+                                            <Loader2 className="animate-spin"/>
+                                            Loading...
+                                        </>
+                                    ) : 'Get Weather'
+                                    }
+                                </Button>
                             </form>
-                            {weather && (
+                            <div className="flex flex-col gap-2">
+                                {formik.errors.city && formik.touched.city && (
+                                    <p className="text-red-500">{formik.errors.city}</p>
+                                )}
+                            </div>
+                            {isLoading && <p>Loading...</p>}
+                            {isError && (
+                                <p className="text-red-500">
+                                    {error.message}
+                                </p>
+                            )}
+                            {isSuccess && weather && (
                                 <div className="flex flex-col gap-4 mt-4">
                                     <p>
                                         <strong>City:</strong> {weather.name}

@@ -5,8 +5,8 @@ import {Input} from "@/components/ui/input";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {useFormik} from "formik";
 import {Button} from "@/components/ui/button";
-import {dehydrate, HydrationBoundary, useQuery, useQueryClient} from "@tanstack/react-query";
-import {use, useState} from "react";
+import {dehydrate, HydrationBoundary, useQueryClient} from "@tanstack/react-query";
+import {useState} from "react";
 import {useWeather} from "@/hooks/useWeather";
 import {WeatherUnits} from "@/services/weather";
 
@@ -19,7 +19,7 @@ export default function Home() {
 
     const [currentWeatherCity, setCurrentWeatherCity] = useState('London')
 
-    const [weatherUnits, setWeatherUnits] = useState<WeatherUnits>('metric');
+    const [weatherUnits] = useState<WeatherUnits>('metric');
 
     const {weather} = useWeather({cityName: currentWeatherCity, units: weatherUnits});
 

@@ -1,7 +1,8 @@
 import {FetcherProps} from "@/hooks/Fetcher";
-import {getWeatherByCityName, WeatherData, WeatherUnits} from "@/services/weather";
+import {getCurrentWeatherByCityName, WeatherUnits} from "@/services/weather";
 import {useQuery} from "@tanstack/react-query";
 import {AxiosError} from "axios";
+import {Weather} from "@/model/Weather";
 
 interface useWeatherProps {
     cityName: string;
@@ -9,10 +10,10 @@ interface useWeatherProps {
 }
 
 interface useWeatherResponse extends FetcherProps {
-    weather: WeatherData;
+    weather: Weather;
 }
 
-export const useWeather = ({cityName, units}: useWeatherProps): useWeatherResponse => {
+export const useCurrentWeather = ({cityName, units}: useWeatherProps): useWeatherResponse => {
 
     const {
         isSuccess,
@@ -24,7 +25,7 @@ export const useWeather = ({cityName, units}: useWeatherProps): useWeatherRespon
     } = useQuery(
         {
             queryKey: ['weather', cityName, units],
-            queryFn: () => getWeatherByCityName(cityName, units),
+            queryFn: () => getCurrentWeatherByCityName(cityName, units),
         }
     );
 
@@ -32,7 +33,7 @@ export const useWeather = ({cityName, units}: useWeatherProps): useWeatherRespon
         isSuccess,
         isLoading,
         isError,
-        weather: (weather as WeatherData),
+        weather: (weather as Weather),
         error: error as AxiosError,
         refetch,
     };

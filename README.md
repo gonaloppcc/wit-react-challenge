@@ -6,6 +6,8 @@ the 5-day weather forecast for a city entered by the user.
 Other features were implemented as well, such as the ability to select the temperature measurement unit between
 **Celsius, Fahrenheit and Kelvin**, and a **graph with the evolution of the temperature**.
 
+You can check the live version of this project [here](https://wit-react-challenge.vercel.app/).
+
 ## Run a development server
 
 ```bash

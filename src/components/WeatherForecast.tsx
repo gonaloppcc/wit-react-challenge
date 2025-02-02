@@ -2,7 +2,6 @@ import React from "react";
 import {Weather} from "@/model/Weather";
 import {WeatherUnitsSymbol} from "@/components/WeatherUnitsSymbol";
 import {WeatherUnits} from "@/services/weather";
-import Image from "next/image";
 
 interface WeatherForecastProps {
     forecasts: Weather[];
